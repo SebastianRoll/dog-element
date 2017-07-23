@@ -1,6 +1,8 @@
 # \<dog-element\>
 
+A Polymer 2 webcomponent that displays dog images!
 
+Powered by [Dog Api](https://dog.ceo/dog-api/)
 
 ## Install the Polymer-CLI
 
