@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<dom-module id="dog-element">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <template is="dom-if" if="[[breed]]">
+      <iron-ajax id="dogAjax" url="https://dog.ceo/api/breed/[[breed]]/images/random" last-response="{{response}}" auto></iron-ajax>
+      <img src="[[response.message]]" on-click="handleClick">
+    </template>
+
+    <template is="dom-if" if="[[!breed]]">
+      <iron-ajax url="https://dog.ceo/api/breeds/list" last-response="{{breeds}}" auto></iron-ajax>
+      <paper-dropdown-menu label="Select breed">
+        <paper-listbox slot="dropdown-content" selected="{{breed}}" attr-for-selected="name">
+          <template is="dom-repeat" items="[[breeds.message]]">
+            <paper-item name="[[item]]">[[item]]</paper-item>
+          </template>
+        </paper-listbox>
+      </paper-dropdown-menu>
+    </template>
+
+  </template>
+
+  <script>
+    /**
+     * `dog-element`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class DogElement extends Polymer.Element {
+      static get is() { return 'dog-element'; }
+      static get properties() {
+        return {
+          breed: {
+            type: String,
+            value: ''
+          },
+          refresh: {
+            type: String,
+            value: ''
+          },
+          response: {
+            type: Object,
+            value: {
+                response: "",
+                message: ""
+            }
+          }
+        };
+      }
+
+      constructor() {
+          super();
+      }
+
+      ready() {
+          super.ready();
+          if (this.refresh != "") {
+              setInterval(this.newImage.bind(this), this.refresh*1000);
+          }
+      }
+
+      handleClick() {
+          this.newImage();
+      }
+
+      newImage() {
+          this.shadowRoot.querySelector("#dogAjax").generateRequest();
+      }
+    }
+
+    window.customElements.define(DogElement.is, DogElement);
+  </script>
+</dom-module>
