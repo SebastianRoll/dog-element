@@ -43,10 +43,6 @@
       static get is() { return 'dog-element'; }
       static get properties() {
         return {
-          imageUrl: {
-            type: String,
-            computed: 'dogUrl()'
-          },
           breed: {
             type: String,
             value: ''
@@ -74,10 +70,6 @@
           if (this.refresh != "") {
               setInterval(this.newImage.bind(this), this.refresh*1000);
           }
-      }
-
-      dogUrl() {
-          return 'https://dog.ceo/api/img/' + this.breed + '/n02111889_15038.jpg'
       }
 
       handleClick() {
